@@ -1,0 +1,22 @@
+1. Reverse a Number Using Recursion
+
+*Algorithm:*
+1. Define a recursive function reverse_number that takes two arguments: num (the number to reverse) and rev (the reversed number so far).
+2. If num is zero, return rev as the final reversed number.
+3. Otherwise:
+   - Extract the last digit of num by computing num % 10.
+   - Update rev to rev * 10 + last digit.
+   - Remove the last digit from num by computing num // 10.
+4. Recursively call reverse_number with the updated num and rev.
+
+*Code:*
+python
+def reverse_number(num, rev=0):
+    if num == 0:
+        return rev
+    else:
+        return reverse_number(num // 10, rev * 10 + num % 10)
+
+# Test
+num = 12345
+print(reverse_number(num))  # Output: 54321
