@@ -1,0 +1,327 @@
+1. Reverse a Number Using Recursion
+
+*Algorithm:*
+1. Define a recursive function reverse_number that takes two arguments: num (the number to reverse) and rev (the reversed number so far).
+2. If num is zero, return rev as the final reversed number.
+3. Otherwise:
+   - Extract the last digit of num by computing num % 10.
+   - Update rev to rev * 10 + last digit.
+   - Remove the last digit from num by computing num // 10.
+4. Recursively call reverse_number with the updated num and rev.
+
+*Code:*
+python
+def reverse_number(num, rev=0):
+    if num == 0:
+        return rev
+    else:
+        return reverse_number(num // 10, rev * 10 + num % 10)
+
+# Test
+num = 12345
+print(reverse_number(num))  # Output: 54321
+
+
+### 2. Find the Perfect Number
+
+*Algorithm:*
+1. Define a function is_perfect that takes an integer n.
+2. Initialize a variable sum_divisors to 0 to keep track of the sum of the divisors.
+3. Loop from 1 to n // 2 (inclusive):
+   - If i divides n evenly (n % i == 0), add i to sum_divisors.
+4. After the loop, check if sum_divisors equals n.
+   - If true, return True (indicating n is a perfect number).
+   - Otherwise, return False.
+
+*Code:*
+python
+def is_perfect(n):
+    sum_divisors = 0
+    for i in range(1, n // 2 + 1):
+        if n % i == 0:
+            sum_divisors += i
+    return sum_divisors == n
+
+# Test
+n = 28
+print(is_perfect(n))  # Output: True
+
+
+### 3. Demonstrate Usage of Big-O Notation
+
+*Algorithm:*
+1. Define a constant time function (constant_time):
+   - Perform a single operation and return the result (O(1)).
+2. Define a linear time function (linear_time):
+   - Initialize a sum variable to 0.
+   - Iterate through the array, adding each element to the sum (O(n)).
+   - Return the sum.
+3. Define a quadratic time function (quadratic_time):
+   - Use nested loops to print each pair of indices (O(n^2)).
+
+*Code:*
+python
+def constant_time(n):
+    return n + 1  # O(1)
+
+def linear_time(arr):
+    total = 0
+    for num in arr:
+        total += num  # O(n)
+    return total
+
+def quadratic_time(arr):
+    for i in range(len(arr)):
+        for j in range(len(arr)):
+            print(i, j)  # O(n^2)
+
+# Test
+print(constant_time(5))  # O(1)
+print(linear_time([1, 2, 3, 4, 5]))  # O(n)
+quadratic_time([1, 2, 3])  # O(n^2)
+
+
+### 4. Mathematical Analysis of Non-Recursive and Recursive Algorithms
+
+*Algorithm:*
+1. Define a non-recursive linear search function (linear_search):
+   - Loop through the array.
+   - If the target element is found, return its index (O(n)).
+   - If the loop ends without finding the target, return -1.
+2. Define a recursive factorial function (factorial):
+   - If n is 0 or 1, return 1 (base case).
+   - Otherwise, return n * factorial(n - 1) (recursive case) (O(n)).
+
+*Code:*
+python
+# Non-recursive algorithm: Linear Search
+def linear_search(arr, target):
+    for i in range(len(arr)):
+        if arr[i] == target:
+            return i  # O(n)
+    return -1
+
+# Recursive algorithm: Factorial
+def factorial(n):
+    if n == 0 or n == 1:
+        return 1  # O(1)
+    else:
+        return n * factorial(n - 1)  # O(n)
+
+# Test
+print(linear_search([1, 2, 3, 4, 5], 4))  # O(n)
+print(factorial(5))  # O(n)
+
+
+### 5. Solving Recurrence Relations
+
+*Algorithm:*
+1. *Master Theorem*:
+   - Define a function master_theorem for T(n) = 2T(n/2) + n.
+   - Base case: If n is 1, return 1.
+   - Recursive case: Return 2 * master_theorem(n // 2) + n (O(n log n)).
+
+*Code:*
+python
+def master_theorem(n):
+    if n == 1:
+        return 1
+    return 2 * master_theorem(n // 2) + n  # O(n log n)
+
+# Test
+print(master_theorem(8))  # O(n log n)
+
+
+2. *Substitution Method*:
+   - Define a function substitution_method for T(n) = T(n-1) + 1.
+   - Base case: If n is 1, return 1.
+   - Recursive case: Return substitution_method(n - 1) + 1 (O(n)).
+
+*Code:*
+python
+def substitution_method(n):
+    if n == 1:
+        return 1
+    return substitution_method(n - 1) + 1  # O(n)
+
+# Test
+print(substitution_method(5))  # O(n)
+
+
+3. *Iteration Method*:
+   - Define a function iteration_method for T(n) = 2T(n/2) + n.
+   - Base case: If n is 1, return 1.
+   - Recursive case: Return 2 * iteration_method(n // 2) + n (O(n log n)).
+
+*Code:*
+python
+def iteration_method(n):
+    if n == 1:
+        return 1
+    return 2 * iteration_method(n // 2) + n  # O(n log n)
+
+# Test
+print(iteration_method(8))  # O(n log n)
+
+
+### 6. Intersection of Two Arrays (Unique Elements)
+
+*Algorithm:*
+1. Convert nums1 and nums2 to sets to remove duplicates.
+2. Find the intersection of the two sets using the & operator.
+3. Convert the resulting set back to a list and return it.
+
+*Code:*
+python
+def intersection_unique(nums1, nums2):
+    return list(set(nums1) & set(nums2))
+
+# Test
+nums1 = [1, 2, 2, 1]
+nums2 = [2, 2]
+print(intersection_unique(nums1, nums2))  # Output: [2]
+
+
+### 7. Intersection of Two Arrays (Elements Appearing Multiple Times)
+
+*Algorithm:*
+1. Use Counter from collections to count the elements in nums1 and nums2.
+2. Find the intersection of the counts by iterating over counts1.
+3. For each common element, extend the result list by the minimum count from both arrays.
+
+*Code:*
+python
+from collections import Counter
+
+def intersection_multiset(nums1, nums2):
+    counts1 = Counter(nums1)
+    counts2 = Counter(nums2)
+    intersection = []
+    for num in counts1:
+        if num in counts2:
+            intersection.extend([num] * min(counts1[num], counts2[num]))
+    return intersection
+
+# Test
+nums1 = [1, 2, 2, 1]
+nums2 = [2, 2]
+print(intersection_multiset(nums1, nums2))  # Output: [2, 2]
+
+
+### 8. Sort an Array in Ascending Order (O(n log n))
+
+*Algorithm:*
+1. Define a merge sort function (merge_sort).
+2. If the array has more than one element:
+   - Find the middle index and divide the array into two halves.
+   - Recursively apply merge sort to each half.
+   - Merge the sorted halves.
+3. Merge function:
+   - Initialize three pointers for the left half, right half, and the main array.
+   - Compare elements from the left and right halves and place them in the correct order in the main array.
+   - Copy any remaining elements from the left and right halves to the main array.
+
+*Code:*
+python
+def merge_sort(arr):
+    if len(arr) > 1:
+        mid = len(arr) // 2
+        L = arr[:mid]
+        R = arr[mid:]
+
+        merge_sort(L)
+        merge_sort(R)
+
+        i = j = k = 0
+        while i < len(L) and j < len(R):
+            if L[i] < R[j]:
+                arr[k] = L[i]
+                i += 1
+            else:
+                arr[k] = R[j]
+                j += 1
+            k += 1
+
+        while i < len(L):
+            arr[k] = L[i]
+            i += 1
+            k += 1
+
+        while j < len(R):
+            arr[k] = R[j]
+            j += 1
+            k += 1
+
+    return arr
+
+# Test
+nums = [5, 2, 3, 1]
+print(merge_sort(nums))  # Output: [1, 2, 3, 5]
+
+### 9. Sort an Array of Integers Such that Half are Odd and Half are Even
+
+*Algorithm:*
+1. Initialize two pointers: odd_index starting at the beginning of the array (index 0) and even_index starting at the beginning of the array (index 0).
+2. Loop through the array:
+   - If the current element is odd and odd_index is at an even position, increment odd_index by 2.
+   - If the current element is even and even_index is at an odd position, increment even_index by 2.
+   - If odd_index is at an even position but the current element at odd_index is even, and even_index is at an odd position but the current element at even_index is odd, swap the elements at odd_index and even_index.
+   - After the swap, increment both odd_index and even_index by 2.
+3. Continue this process until all elements are correctly placed.
+
+*Code:*
+python
+def sort_half_odd_half_even(nums):
+    odd_index = 0
+    even_index = 1
+    n = len(nums)
+    
+    while odd_index < n and even_index < n:
+        if nums[odd_index] % 2 == 0:
+            while even_index < n and nums[even_index] % 2 == 0:
+                even_index += 2
+            if even_index < n:
+                nums[odd_index], nums[even_index] = nums[even_index], nums[odd_index]
+        odd_index += 2
+
+    return nums
+
+# Test
+nums = [4, 1, 2, 3, 6, 7, 8, 5]
+print(sort_half_odd_half_even(nums))  # Output: [1, 4, 3, 2, 7, 6, 5, 8] (any valid arrangement)
+
+
+
+
+### 10. Sort an Array such that Whenever nums[i] is Odd, i is Odd, and Whenever nums[i] is Even, i is Even
+
+*Algorithm:*
+1. Initialize two pointers: odd_index starting at 1 (first odd index) and even_index starting at 0 (first even index).
+2. Loop through the array using a while loop:
+   - If the element at even_index is even, increment even_index by 2.
+   - If the element at odd_index is odd, increment odd_index by 2.
+   - If the element at even_index is odd and the element at odd_index is even, swap them.
+   - Continue this process until all elements are in the correct positions.
+
+*Code:*
+python
+def sort_array_by_parity(nums):
+    odd_index = 1
+    even_index = 0
+    n = len(nums)
+    
+    while odd_index < n and even_index < n:
+        if nums[even_index] % 2 == 0:
+            even_index += 2
+        elif nums[odd_index] % 2 == 1:
+            odd_index += 2
+        else:
+            nums[even_index], nums[odd_index] = nums[odd_index], nums[even_index]
+            even_index += 2
+            odd_index += 2
+
+    return nums
+
+# Test
+nums = [4, 1, 2, 3, 6, 7, 8, 5]
+print(sort_array_by_parity(nums))  # Output: [4, 3, 2, 1, 6, 7, 8, 5] 
