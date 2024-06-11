@@ -1,0 +1,435 @@
+1. Merge Two Sorted Lists
+
+#### Algorithm:
+1. Create a dummy node to act as the head of the merged list.
+2. Traverse both lists, adding the smaller node to the merged list.
+3. Append any remaining nodes from either list.
+
+#### Input and Output:
+- Input: Two linked lists list1 and list2.
+- Output: The merged sorted linked list.
+
+python
+class ListNode:
+    def _init_(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def mergeTwoLists(list1, list2):
+    dummy = ListNode()
+    tail = dummy
+
+    while list1 and list2:
+        if list1.val < list2.val:
+            tail.next = list1
+            list1 = list1.next
+        else:
+            tail.next = list2
+            list2 = list2.next
+        tail = tail.next
+
+    if list1:
+        tail.next = list1
+    if list2:
+        tail.next = list2
+
+    return dummy.next
+
+# Example usage:
+# List1: 1 -> 2 -> 4
+list1 = ListNode(1, ListNode(2, ListNode(4)))
+# List2: 1 -> 3 -> 4
+list2 = ListNode(1, ListNode(3, ListNode(4)))
+
+merged_list = mergeTwoLists(list1, list2)
+while merged_list:
+    print(merged_list.val, end=" -> ")
+    merged_list = merged_list.next
+# Output: 1 -> 1 -> 2 -> 3 -> 4 -> 4 -> 
+
+
+### 2. Merge k Sorted Lists
+
+#### Algorithm:
+1. Use a min-heap to keep track of the heads of all lists.
+2. Extract the minimum node and add it to the merged list.
+3. Add the next node from the same list to the heap.
+
+#### Input and Output:
+- Input: An array of linked lists lists.
+- Output: The merged sorted linked list.
+
+python
+import heapq
+
+class ListNode:
+    def _init_(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def mergeKLists(lists):
+    heap = []
+    for l in lists:
+        if l:
+            heapq.heappush(heap, (l.val, l))
+
+    dummy = ListNode()
+    tail = dummy
+
+    while heap:
+        val, node = heapq.heappop(heap)
+        tail.next = node
+        tail = tail.next
+        if node.next:
+            heapq.heappush(heap, (node.next.val, node.next))
+
+    return dummy.next
+
+# Example usage:
+# Lists: [[1,4,5],[1,3,4],[2,6]]
+list1 = ListNode(1, ListNode(4, ListNode(5)))
+list2 = ListNode(1, ListNode(3, ListNode(4)))
+list3 = ListNode(2, ListNode(6))
+lists = [list1, list2, list3]
+
+merged_list = mergeKLists(lists)
+while merged_list:
+    print(merged_list.val, end=" -> ")
+    merged_list = merged_list.next
+# Output: 1 -> 1 -> 2 -> 3 -> 4 -> 4 -> 5 -> 6 -> 
+
+
+### 3. Remove Duplicates from Sorted Array
+
+#### Algorithm:
+1. Use two pointers to iterate through the array.
+2. Move unique elements to the front.
+
+#### Input and Output:
+- Input: An integer array nums.
+- Output: The length k of the array with unique elements.
+
+python
+def removeDuplicates(nums):
+    if not nums:
+        return 0
+
+    write_index = 1
+    for i in range(1, len(nums)):
+        if nums[i] != nums[i - 1]:
+            nums[write_index] = nums[i]
+            write_index += 1
+
+    return write_index
+
+# Example usage:
+nums = [0,0,1,1,1,2,2,3,3,4]
+k = removeDuplicates(nums)
+print(k)  # Output: 5
+print(nums[:k])  # Output: [0, 1, 2, 3, 4]
+
+
+### 4. Search in Rotated Sorted Array
+
+#### Algorithm:
+1. Perform binary search with additional checks to determine which side to search.
+
+#### Input and Output:
+- Input: An integer array nums and an integer target.
+- Output: The index of the target, or -1 if not found.
+
+python
+def search(nums, target):
+    left, right = 0, len(nums) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+        if nums[mid] == target:
+            return mid
+
+        if nums[left] <= nums[mid]:
+            if nums[left] <= target < nums[mid]:
+                right = mid - 1
+            else:
+                left = mid + 1
+        else:
+            if nums[mid] < target <= nums[right]:
+                left = mid + 1
+            else:
+                right = mid - 1
+
+    return -1
+
+# Example usage:
+nums = [4,5,6,7,0,1,2]
+target = 0
+print(search(nums, target))  # Output: 4
+
+target = 3
+print(search(nums, target))  # Output: -1
+
+
+### 5. Find First and Last Position of Element in Sorted Array
+
+#### Algorithm:
+1. Use binary search to find the first occurrence.
+2. Use binary search to find the last occurrence.
+
+#### Input and Output:
+- Input: An integer array nums and an integer target.
+- Output: A list with the starting and ending positions of the target.
+
+python
+def searchRange(nums, target):
+    def findFirst(nums, target):
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] >= target:
+                right = mid - 1
+            else:
+                left = mid + 1
+        return left
+
+    def findLast(nums, target):
+        left, right = 0, len(nums) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if nums[mid] <= target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return right
+
+    first = findFirst(nums, target)
+    last = findLast(nums, target)
+
+    if first <= last:
+        return [first, last]
+    else:
+        return [-1, -1]
+
+# Example usage:
+nums = [5,7,7,8,8,10]
+target = 8
+print(searchRange(nums, target))  # Output: [3, 4]
+
+target = 6
+print(searchRange(nums, target))  # Output: [-1, -1]
+
+
+### 6. Sort Colors
+
+#### Algorithm:
+1. Use the Dutch National Flag algorithm to sort the colors in-place.
+
+#### Input and Output:
+- Input: An integer array nums.
+- Output: The sorted array in-place.
+
+python
+def sortColors(nums):
+    low, mid, high = 0, 0, len(nums) - 1
+
+    while mid <= high:
+        if nums[mid] == 0:
+            nums[low], nums[mid] = nums[mid], nums[low]
+            low += 1
+            mid += 1
+        elif nums[mid] == 1:
+            mid += 1
+        else:
+            nums[mid], nums[high] = nums[high], nums[mid]
+            high -= 1
+
+# Example usage:
+nums = [2, 0, 2, 1, 1, 0]
+sortColors(nums)
+print(nums)  # Output: [0, 0, 1, 1, 2, 2]
+
+
+### 7. Remove Duplicates from Sorted List
+
+#### Algorithm:
+1. Traverse the list and skip nodes with duplicate values.
+
+#### Input and Output:
+- Input: The head of a linked list head.
+- Output: The head of the modified list.
+
+python
+class ListNode:
+    def _init_(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def deleteDuplicates(head):
+    current = head
+    while current and current.next:
+        if current.val == current.next.val:
+            current.next = current.next.next
+        else:
+            current = current.next
+    return head
+
+# Example usage:
+# List: 1 -> 1 -> 2
+head = ListNode(1, ListNode(1, ListNode(2)))
+new_head = deleteDuplicates(head)
+while new_head:
+    print(new_head.val, end=" -> ")
+    new_head = new_head.next
+# Output: 1 -> 2 -> 
+
+
+### 8. Merge Sorted Array
+
+#### Algorithm:
+1. Use three pointers to merge nums2 into nums1 starting from the end.
+
+#### Input and Output:
+- Input: Two integer arrays nums1 and nums2, and two integers m and n.
+- Output: The merged array in nums1.
+
+python
+def merge(nums1, m, nums2, n):
+    i, j, k = m
+
+ - 1, n - 1, m + n - 1
+
+    while i >= 0 and j >= 0:
+        if nums1[i] > nums2[j]:
+            nums1[k] = nums1[i]
+            i -= 1
+        else:
+            nums1[k] = nums2[j]
+            j -= 1
+        k -= 1
+
+    while j >= 0:
+        nums1[k] = nums2[j]
+        j -= 1
+        k -= 1
+
+# Example usage:
+nums1 = [1,2,3,0,0,0]
+m = 3
+nums2 = [2,5,6]
+n = 3
+merge(nums1, m, nums2, n)
+print(nums1)  # Output: [1, 2, 2, 3, 5, 6]
+
+
+### 9. Intersection of Two Arrays
+
+#### Algorithm:
+1. Use a set to store unique elements of the first array.
+2. Iterate through the second array and check for common elements using the set.
+
+#### Input and Output:
+- Input: Two integer arrays nums1 and nums2.
+- Output: The intersection of the arrays.
+
+python
+def intersection(nums1, nums2):
+    set1 = set(nums1)
+    result = set()
+    for num in nums2:
+        if num in set1:
+            result.add(num)
+    return list(result)
+
+# Example usage:
+nums1 = [1,2,2,1]
+nums2 = [2,2]
+print(intersection(nums1, nums2))  # Output: [2]
+
+nums1 = [4,9,5]
+nums2 = [9,4,9,8,4]
+print(intersection(nums1, nums2))  # Output: [9, 4]
+
+
+### 10. Intersection of Two Arrays II
+
+#### Algorithm:
+1. Use a dictionary to count occurrences of elements in the first array.
+2. Iterate through the second array and collect common elements based on the counts.
+
+#### Input and Output:
+- Input: Two integer arrays nums1 and nums2.
+- Output: The intersection of the arrays with duplicates.
+
+python
+def intersect(nums1, nums2):
+    from collections import Counter
+    count1 = Counter(nums1)
+    result = []
+
+    for num in nums2:
+        if count1[num] > 0:
+            result.append(num)
+            count1[num] -= 1
+
+    return result
+
+# Example usage:
+nums1 = [1,2,2,1]
+nums2 = [2,2]
+print(intersect(nums1, nums2))  # Output: [2, 2]
+
+nums1 = [4,9,5]
+nums2 = [9,4,9,8,4]
+print(intersect(nums1, nums2))  # Output: [4, 9]
+
+
+### 11. Median of Two Sorted Arrays
+
+#### Algorithm:
+1. Use binary search on the smaller array to find the partition.
+2. Calculate the median based on the partition indices.
+
+#### Input and Output:
+- Input: Two integer arrays nums1 and nums2.
+- Output: The median of the arrays.
+
+python
+def findMedianSortedArrays(nums1, nums2):
+    if len(nums1) > len(nums2):
+        nums1, nums2 = nums2, nums1
+
+    x, y = len(nums1), len(nums2)
+    low, high = 0, x
+
+    while low <= high:
+        partitionX = (low + high) // 2
+        partitionY = (x + y + 1) // 2 - partitionX
+
+        maxX = float('-inf') if partitionX == 0 else nums1[partitionX - 1]
+        minX = float('inf') if partitionX == x else nums1[partitionX]
+        
+        maxY = float('-inf') if partitionY == 0 else nums2[partitionY - 1]
+        minY = float('inf') if partitionY == y else nums2[partitionY]
+
+        if maxX <= minY and maxY <= minX:
+            if (x + y) % 2 == 0:
+                return (max(maxX, maxY) + min(minX, minY)) / 2
+            else:
+                return max(maxX, maxY)
+        elif maxX > minY:
+            high = partitionX - 1
+        else:
+            low = partitionX + 1
+
+    raise ValueError("Input arrays are not sorted")
+
+# Example usage:
+nums1 = [1, 3]
+nums2 = [2]
+print(findMedianSortedArrays(nums1, nums2))  # Output: 2.0
+
+nums1 = [1, 2]
+nums2 = [3, 4]
+print(findMedianSortedArrays(nums1, nums2))  # Output: 2.5
+
+
+These solutions now include the problem statements, algorithms, inputs, and expected outputs for problems 1 to 11. Let me know if you need any further explanations or modifications!
