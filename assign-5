@@ -1,0 +1,110 @@
+1.Two sum
+def two_sum(n, target):
+ index = {}
+ for i, num in enumerate(n):
+ complement = target - num
+ if complement in index:
+ return [index[complement], i]
+ index[num] = i
+n = [2, 7, 11, 15]
+target = 9
+print(two_sum(n,target))
+
+
+3.Longest substring
+def longest_substring(s: str) -> int:
+ char_index_map = {}
+ start = max_length = 0
+ for end, char in enumerate(s):
+ if char in char_index_map and char_index_map[char] >= start:
+ start = char_index_map[char] + 1
+ char_index_map[char] = end
+ max_length = max(max_length, end - start + 1)
+ return max_length
+s = "abcabcbb"
+print(longest_substring(s))
+
+
+4.median of sorted array
+def findMedianSortedArrays(n1, n2):
+ nums = sorted(n1 + n2)
+ n = len(nums)
+ if n % 2 == 1:
+ return nums[n // 2]
+ else:
+ return (nums[n // 2 - 1] + nums[n // 2]) / 2.0
+n1 = [1, 3]
+n2 = [2]
+print(findMedianSortedArrays(n1, n2))
+
+
+5.Longest palindrome substring
+def longest_palindromic_substring(s):
+ def is_palindrome(s):
+ return s == s[::-1]
+ longest_palindrome = ""
+ for i in range(len(s)):
+ for j in range(i, len(s)):
+ substring = s[i:j+1]
+ if is_palindrome(substring) and len(substring) > len(longest_palindrome):
+ longest_palindrome = substring
+ return longest_palindrome
+s = "babad"
+print(longest_palindromic_substring(s))
+
+
+6.Convert
+def convert(s: str, numRows: int) -> str:
+ if numRows == 1 or numRows >= len(s):
+ return s
+ rows = [''] * numRows
+ row, step = 0, -1
+ for char in s:
+ rows[row] += char
+ if row == 0 or row == numRows - 1:
+ step = -step
+ row += step
+ return ''.join(rows)
+input = "PAYPALISHIRING"
+num_rows = 3
+print(convert(input, num_rows)) 
+
+
+7.Reverse of a number
+num=1234
+rev=0
+while num!=0:
+ rem=num%10
+ rev=rev*10+rem
+ num//=10
+print(rev)
+
+
+8.convert string to integer
+str="42"
+print(int(str))
+
+
+9.palindrome
+num=127
+temp=num
+rev=0
+while num>0:
+ rem=num%10
+ rev=rev*10+rem
+ num=num//10
+if temp==rev:
+ print("palindrome")
+else:
+ print("not palindrome")
+
+
+10.Regular expression matching
+p = "aa"
+s = "a"
+p = r"{}".format(p)
+p = re.compile(p)
+if p.fullmatch(s):
+ print("true")
+else:
+ print("fal
